@@ -28,7 +28,10 @@ functions.setGlobalOptions({maxInstances: 10});
 exports.createLink = functions.https.onRequest(async (req, res) => {
   // --- Manejo de CORS ---
   // Obtiene el valor del parámetro y lo divide en un array.
-  const allowedOrigins = corsAllowedOriginsParam.value().split(",").filter(Boolean);
+  const allowedOrigins = corsAllowedOriginsParam
+      .value()
+      .split(",")
+      .filter(Boolean);
   const origin = req.headers.origin;
 
   if (allowedOrigins.includes(origin)) {
