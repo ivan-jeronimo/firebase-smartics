@@ -40,7 +40,9 @@ exports.createProductLink = functions.https.onRequest(async (req, res) => {
     return res.status(405).send("Method Not Allowed");
   }
 
-  const {targetUrl, shortId} = req.body;
+  const {targetUrl} = req.body;
+  let {shortId} = req.body; // Usar let para poder modificarlo
+
   if (!targetUrl || !shortId) {
     const errorMsg = "Faltan 'targetUrl' o 'shortId' en la solicitud.";
     logger.warn(errorMsg);
@@ -49,14 +51,18 @@ exports.createProductLink = functions.https.onRequest(async (req, res) => {
     );
   }
 
+  // Forzar a minúsculas para consistencia
+  shortId = shortId.toLowerCase();
+
   try {
     const newLink = {
       targetUrl,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await db.collection("shortlinks").doc(shortId).set(newLink);
-    const logMsg = `Enlace de producto creado/actualizado: ${shortId} -> ${targetUrl}`;
-    logger.info(logMsg);
+    logger.info(
+        `Enlace de producto creado/actualizado: ${shortId} -> ${targetUrl}`,
+    );
     return res.status(201).json({shortId});
   } catch (error) {
     logger.error("Error al crear el enlace de producto:", error);
