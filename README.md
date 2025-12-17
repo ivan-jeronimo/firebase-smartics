@@ -14,7 +14,7 @@ This project contains a set of Firebase Cloud Functions designed to create, mana
 
 ## Environment Setup
 
-This project uses a parameterized configuration, which is managed through `.env` files in the `functions` directory. This allows you to define different settings for each of your Firebase projects (e.g., staging vs. production).
+This project uses a parameterized configuration, which is managed through `.env` files in the `functions` directory. This allows you to define different settings for each of your Firebase projects.
 
 ### 1. Required Parameters
 
@@ -27,29 +27,29 @@ The functions rely on the following environment parameters:
 
 In the `functions` directory, create `.env` files that match your Firebase Project IDs.
 
-**Example Project IDs:**
-- Production: `my-smartics-prod`
+**Project IDs:**
+- Production: `smartics-prod`
 - Staging: `smarticsmapsstage`
 
-**File for Production (`functions/.env.my-smartics-prod`):**
+**File for Production (`functions/.env.smartics-prod`):**
 ```env
 # Configuration for PRODUCTION
-CORS_ALLOWED_ORIGINS="https://smartics.com.mx"
-APP_BASE_URL="https://smartics.com.mx"
+CORS_ALLOWED_ORIGINS="https://www.smartics.com.mx"
+APP_BASE_URL="https://sl.smartics.com.mx"
 ```
 
 **File for Staging (`functions/.env.smarticsmapsstage`):**
 ```env
 # Configuration for STAGING
-CORS_ALLOWED_ORIGINS="https://stage.smartics.com.mx,http://localhost:3300"
-APP_BASE_URL="https://stage.smartics.com.mx"
+CORS_ALLOWED_ORIGINS="https://www.stage.smartics.com.mx,http://localhost:3300"
+APP_BASE_URL="https://sl.stage.smartics.com.mx"
 ```
 
 **File for Local Development (`functions/.env`):**
 ```env
 # Default configuration for local development
 CORS_ALLOWED_ORIGINS="http://localhost:3300"
-APP_BASE_URL="http://localhost:3300"
+APP_BASE_URL="http://sl.local.smartics.com.mx"
 ```
 
 > **Important**: Add all `.env.*` files to your `.gitignore` to keep secrets out of version control.
@@ -62,12 +62,12 @@ To deploy your functions to a specific environment, use the `--project` flag wit
 
 **Deploy to Staging:**
 ```sh
-firebase deploy --only functions --project smarticsmapsstage
+firebase deploy --project smarticsmapsstage
 ```
 
 **Deploy to Production:**
 ```sh
-firebase deploy --only functions --project my-smartics-prod
+firebase deploy --project smartics-prod
 ```
 
 On the first deployment to a new project, the Firebase CLI will detect the parameters (`CORS_ALLOWED_ORIGINS`, `APP_BASE_URL`) and prompt you to enter their values. These values are then stored securely in your Firebase project.
