@@ -4,7 +4,6 @@
   },
   "hosting": [
     {
-      "target": "production-shortlink",
       "site": "smartics-prod",
       "public": "public",
       "rewrites": [
@@ -15,7 +14,6 @@
       ]
     },
     {
-      "target": "staging-shortlink",
       "site": "smarticsmapsstage",
       "public": "public",
       "rewrites": [
