@@ -7,12 +7,18 @@ const {defineString} = require("firebase-functions/params");
 admin.initializeApp();
 const db = admin.firestore();
 
-// --- Configuración de CORS con Parámetros ---
+// --- Configuración de Parámetros de Entorno ---
+
+// Parámetro para los orígenes CORS permitidos
 const corsAllowedOriginsParam = defineString("CORS_ALLOWED_ORIGINS", {
-  default: "https://smartics.com.mx,http://localhost:3300",
-  label: "Allowed CORS origins",
   description: "Comma-separated list of allowed CORS origins.",
 });
+
+// Parámetro para la URL base de la aplicación (depende del entorno)
+const appBaseUrl = defineString("APP_BASE_URL", {
+  description: "The base URL of the frontend application for the environment.",
+});
+
 
 functions.setGlobalOptions({maxInstances: 10});
 
@@ -129,7 +135,8 @@ exports.redirect = functions.https.onRequest(async (req, res) => {
       return res.redirect(302, doc.data().targetUrl);
     } else {
       logger.warn(`Enlace no encontrado para ID: ${shortPath}`);
-      return res.status(404).redirect("https://smartics.com.mx");
+      // Usa el parámetro para la URL de fallback
+      return res.status(404).redirect(appBaseUrl.value());
     }
   } catch (error) {
     logger.error("Error al buscar o redirigir el enlace:", error);
